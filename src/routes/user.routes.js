@@ -1,6 +1,8 @@
 import { Router } from "express";
-import { logoutUser, registerUser } from "../controllers/user.controller.js";
+import { loginUser, logoutUser, registerUser,refreshAccessToken } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { ApiError } from "../utils/ApiError.js";
 
 const router =Router()
 
@@ -16,6 +18,9 @@ router.route("/register").post(
     ]),
     registerUser)
 
-router.route("/login").post(verifyJWT,logoutUser)
+router.route("/login").post(verifyJWT,logoutUser);
+router.route("/logout").post(loginUser)
+router.route("/refresh-token").post(refreshAccessToken)
+router.route("/").get((req,res) => res.json({"Text": "Hello"}))
 
 export default router;  
